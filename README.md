@@ -16,6 +16,6 @@ const CONFIG = {
 启动
 
 ```
+$ npm install
 $ node server.js
-
 ```
