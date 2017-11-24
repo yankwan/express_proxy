@@ -10,7 +10,7 @@ const app = express();
  * LOCAL_PORT: 本机启动端口
  */
 const CONFIG = { 
-    DEST_HOST :'http://localportal.ctg.com:8099', 
+    DEST_HOST :'http://orderportal.ctg.com:8011', 
     LOCAL_PORT : '8033' 
 };
 
@@ -28,15 +28,19 @@ app.use((req, res, next) => {
 
 // 反向代理
 app.use('/*', (req, res) => {
+    let content;
     console.log('-------->>> req.body', req.body);
     const method = req.method.toLowerCase();
     // request.post('xxxxx') or request.get('xxxxx')
+    // 进行转发
     const originalReq = request[method](CONFIG.DEST_HOST + req.originalUrl);
     //如果为 post 或者 put 则需要发送时传递body
     if (method === 'post' || method === 'put') {
-        originalReq.set('Content-Type', 'application/json')
+        originalReq.set('Accept', 'application/json')
                    .send(req.body)
+
     }
+
     originalReq.pipe(res);
     originalReq.on('end', (error, result) => {
         if (error) {
