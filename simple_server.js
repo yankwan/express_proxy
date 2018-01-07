@@ -5,21 +5,21 @@
 const http = require('http');
 const url = require('url');
 
-const server = http.createServer((sreq, sres) => {
+const server = http.createServer((req, res) => {
     let options = {
         hostname: 'www.baidu.com',
         port: 80,
-        path: sreq.url,
+        path: req.url,
         method: 'GET'
     };
 
-    let proxy = http.request(options, (cres) => {
-        cres.pipe(sres, {
+    let req2 = http.request(options, (res2) => {
+        res2.pipe(res, {
             end: true
         });
     });
 
-    sreq.pipe(proxy, {
+    req.pipe(req2, {
         end: true
     });
 
