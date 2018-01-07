@@ -31,6 +31,11 @@ app1.post("/hello", (req, res) => {
     res.end("this is post method");
 })
 
+app1.use("/*", (req, res) => {
+    console.log('request body is %j', req.body);
+    res.end(`request method is ${req.method}`);
+})
+
 app1.listen("3001", () => {
     console.log(`start server on 127.0.0.1:3001`)
 });
